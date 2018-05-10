@@ -5,7 +5,7 @@ self.addEventListener('install', function(event) {
                 '/',
                 '/index.html',
                 '/dist/index.js',
-                '/dist/styles.css',
+                '/dist/index.css',
                 '/app/img/favicon.ico'
             ])
         }).then(function () {
