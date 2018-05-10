@@ -10,6 +10,9 @@
 - 离线访问: Service Worker
 - 消息推送: Web Push
 
+### App Manifest
+- 触发应用添加横幅条件: 站点在同一浏览器中被访问至少两次，两次访问间隔至少为 5 分钟; ...
+
 ### Service Worker
 
 ![sw](assets/service_worker.png)
