@@ -66,3 +66,12 @@ self.addEventListener('fetch', function(event) {
         })
     )
 });
+
+//监听推送
+self.addEventListener('push', function (event) {
+	if (event.data) {
+		var promiseChain = Promise.resolve(event.data.json())
+		.then(data => self.registration.showNotification(data.title, {}));
+		event.waitUntil(promiseChain);
+	}
+});

@@ -24,3 +24,5 @@ data AJAX: networkFirst => networkOnly
 ```
 
 ### Web Push
+- Notification api
+- push api
