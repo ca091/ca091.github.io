@@ -49,7 +49,13 @@ self.addEventListener('fetch', function(event) {
             var request = event.request.clone();
             return fetch(request).then(function (httpRes) {
                 //请求失败
-                if(!httpRes || httpRes.status !==200) return response;
+                if(!httpRes || httpRes.status !==200){
+                    return new Response('404!!', {
+                        headers: {
+                            'content-type': 'text/plain; charset=utf-8'
+                        }
+                    })
+                };
                 //请求成功, 再次缓存
                 var responseClone = httpRes.clone();
                 caches.open('test-v1').then(function (cache) {
