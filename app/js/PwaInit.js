@@ -1,20 +1,19 @@
 import {urlBase64ToUnit8Array} from './Utils.js';
 class Pwa {
 	constructor({elAddTo}){
-		this.registration = null;
 		this.dfdPrompt = null;
 		this.elAddTo = elAddTo;
 	}
 	initSW() {
 		if('serviceWorker' in navigator){
-			navigator.serviceWorker.register('/sw.js', {scope: '/'})
-			.then(registration => {
-				this.registration = registration;
-				console.log('ServiceWorker登记成功，范围为', registration.scope);
-			})
-			.catch(function (err) {
-				console.log('ServiceWorker登记失败：', err);
-			});
+			return navigator.serviceWorker.register('/sw.js', {scope: '/'})
+				.then(registration => {
+					console.log('ServiceWorker登记成功，范围为', registration.scope);
+					return registration;
+				})
+				.catch(function (err) {
+					console.log('ServiceWorker登记失败：', err);
+				});
 		}else{
 			alert('not support serviceWorker')
 		}
@@ -39,12 +38,12 @@ class Pwa {
 		})
 		.then(permissionResult => {
 			if (permissionResult === 'granted') {
-				if(this.registration){
-					this.registration.showNotification('ServiceWorker登记成功!', {
+				navigator.serviceWorker.ready.then(reg => {
+					reg.showNotification('ServiceWorker登记成功!', {
 						icon: '/app/img/favicon.ico',
 						body: 'can u see?'
 					});
-				}
+				});
 			} else {
 				console.log('no permission');
 			}
@@ -83,11 +82,13 @@ class Pwa {
 		}
 	}
 	subscribe(serviceWorkerReg) {
+		console.log('browser subscribe');
 		serviceWorkerReg.pushManager.subscribe({
 			userVisibleOnly: true,
 			applicationServerKey: urlBase64ToUnit8Array('BEb2P46QjCQigSz8cpjj8I4s97tQrw-dxlh7MwUhdDQXEg-e11V7fzbye3xEysTcoDp2f6d-B-Q9QoEZdCOESPk')
 		})
 		.then(subscription => {
+			console.log(123);
 			console.log({subscription})
 			// 3. 发送推送订阅对象到服务器，具体实现中发送请求到后端api
 			// sendEndpointInSubscription(subscription);

@@ -26,3 +26,5 @@ data AJAX: networkFirst => networkOnly
 ### Web Push
 - Notification api
 - push api
+
+- [https://lavas.baidu.com](https://lavas.baidu.com)
