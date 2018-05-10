@@ -28,3 +28,7 @@ data AJAX: networkFirst => networkOnly
 - push api
 
 - [https://lavas.baidu.com](https://lavas.baidu.com)
+- [https://github.com/web-push-libs/web-push](https://github.com/web-push-libs/web-push)
+
+### Bugs
+- 谷歌推送服务器无法访问
