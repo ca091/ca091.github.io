@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="max-age=31536000">
+    <meta http-equiv="last-modified" content="Wed, 09 Aug 2016 15:19:21 GMT">
+    <title>Title</title>
+    <style>
+        #map{
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<h3>My Google Maps Demo</h3>
+<div id="map"></div>
+<script>
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 15
+        });
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('Location found.');
+                map.setCenter(pos);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+    }
+
+    function getjw() {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            appendMsg('latitude: ' + position.coords.latitude)
+            appendMsg('longitude: ' + position.coords.longitude)
+        }, function (error) {
+            appendMsg(error.message)
+        })
+    }
+
+    function appendMsg(msg) {
+        var p = document.createElement('p')
+        p.textContent = msg
+        document.body.appendChild(p)
+    }
+
+    getjw()
+</script>
+
+<!--<script async defer-->
+        <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9ME1dQVkpWjSS8iCBAmNzeYL8A2054ds&callback=initMap">-->
+<!--</script>-->
+
+</body>
+</html>

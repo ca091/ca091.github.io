@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>indexedDB</title>
+    <style>
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        th{
+            background-color: lightblue;
+            border: 1px solid grey;
+        }
+        td{
+            border: 1px solid grey;
+        }
+        tr:nth-child(2n+1){
+            background-color: cornsilk;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>isbn</th>
+            <th>title</th>
+            <th>author</th>
+        </tr>
+    </table>
+    <button id="btn-all">all</button>
+
+    <button id="btn-clear">clear</button>
+
+    <div>
+        <input type="text" placeholder="title" id="input-title">
+        <input type="text" placeholder="author" id="input-author">
+        <button id="btn-add">add</button>
+    </div>
+
+    <div>
+        <input type="text" placeholder="isbn (key)" id="input-delete">
+        <button id="btn-del">delete</button>
+    </div>
+    <script src="../js/indexedDB.js"></script>
+    <script>
+        var $ = document.querySelector.bind(document)
+        var table = $('table')
+        window.onload = init;
+        function init() {
+            var dom_all = $('#btn-all')
+            var dom_delete = $('#btn-del')
+            var dom_clear = $('#btn-clear')
+            var dom_add = $('#btn-add')
+
+            var input_title = $('#input-title')
+            var input_author = $('#input-author')
+            var input_delete = $('#input-delete')
+
+            dom_all.addEventListener('click', function (e) {
+                resetTable(table)
+                dbManager.all(function (arr) {
+                    for(var i of arr){
+                        appendItem(table, i)
+                    }
+                });
+            });
+
+            dom_delete.addEventListener('click', function (e) {
+                dbManager.del(input_delete.value);
+                resetTable(table)
+                dbManager.all(function (arr) {
+                    for(var i of arr){
+                        appendItem(table, i)
+                    }
+                });
+            });
+
+            dom_clear.addEventListener('click', function (e) {
+                resetTable(table)
+                dbManager.clear()
+            });
+
+            dom_add.addEventListener('click', function (e) {
+                if(input_title.value.trim()=='' || input_author.value.trim()=='') return;
+                dbManager.put({
+                    title: input_title.value,
+                    author: input_author.value
+                });
+                dbManager.get(input_title.value, function (i) {
+                    appendItem(table, i)
+                })
+            })
+        }
+        function resetTable(table) {
+            table.innerHTML = '';
+            var tr = document.createElement('tr')
+            var th_isbn = document.createElement('th')
+            var th_title = document.createElement('th')
+            var th_author = document.createElement('th')
+            th_isbn.textContent = 'isbn'
+            th_title.textContent = 'title'
+            th_author.textContent = 'author'
+            tr.appendChild(th_isbn)
+            tr.appendChild(th_title)
+            tr.appendChild(th_author)
+            table.appendChild(tr)
+        }
+        function appendItem(dom, item) {
+            var tr = document.createElement('tr')
+            var td_isbn = document.createElement('td')
+            var td_title = document.createElement('td')
+            var td_author = document.createElement('td')
+            td_isbn.textContent = item.isbn
+            td_title.textContent = item.title
+            td_author.textContent = item.author
+            tr.appendChild(td_isbn)
+            tr.appendChild(td_title)
+            tr.appendChild(td_author)
+            dom.appendChild(tr)
+        }
+    </script>
+</body>
+</html>
