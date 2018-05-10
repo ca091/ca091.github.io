@@ -1,0 +1,39 @@
+{
+  "name": "pwa-in",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "erluzi",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --inline --config build/webpack.dev.js",
+    "build": "webpack --config build/webpack.pro.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "less-plugin-functions": "^1.0.0",
+    "postcss-loader": "^2.1.5",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.2"
+  },
+  "dependencies": {
+
+  },
+  "browserslist": [
+    "> 5%",
+    "last 2 versions",
+    "Firefox >= 20",
+    "not ie <= 8"
+  ]
+}
