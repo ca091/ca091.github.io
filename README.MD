@@ -19,3 +19,5 @@
 static file: cacheFirst => fastest => cacheOnly
 data AJAX: networkFirst => networkOnly
 ```
+
+### Web Push

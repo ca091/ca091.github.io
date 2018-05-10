@@ -5,11 +5,8 @@
     {
       "src": "/app/img/favicon.ico",
       "sizes": "180x180",
-      "type": "image/ico"
+      "type": "image/x-icon"
     }
   ],
-  "start_url": "/",
-  "background_color": "#f4f4f4",
-  "display": "standalone",
-  "theme_color": "#ffe800"
+  "start_url": "index.html"
 }
