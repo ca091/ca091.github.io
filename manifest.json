@@ -1,0 +1,15 @@
+{
+  "name": "PWA IN",
+  "short_name": "pwa_in",
+  "icons": [
+    {
+      "src": "/app/img/favicon.ico",
+      "sizes": "180x180",
+      "type": "image/ico"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#f4f4f4",
+  "display": "standalone",
+  "theme_color": "#ffe800"
+}
