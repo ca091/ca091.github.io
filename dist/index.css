@@ -22,3 +22,48 @@ footer {
    -ms-flex: 1;
        flex: 1;
 }
+.hidden {
+  display: none;
+}
+@supports (display: grid) {
+  .grid {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: (minmax(120px, 3fr))[auto-fill];
+        grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
+    grid-auto-rows: minmax(50px, auto);
+  }
+  .grid > div,
+  .grid > li {
+    border: 1px solid orange;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -moz-box-align: center;
+     -ms-flex-align: center;
+         align-items: center;
+    -moz-box-pack: center;
+     -ms-flex-pack: center;
+         justify-content: center;
+  }
+}
+@media all and (display-mode: fullscreen) {
+  body {
+    margin: 0;
+  }
+}
+@media all and (display-mode: standalone) {
+  body {
+    margin: 1px;
+  }
+}
+@media all and (display-mode: minimal-ui) {
+  body {
+    margin: 2px;
+  }
+}
+@media all and (display-mode: browser) {
+  body {
+    margin: 3px;
+  }
+}
