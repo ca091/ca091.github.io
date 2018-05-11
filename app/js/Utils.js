@@ -12,6 +12,17 @@ function urlBase64ToUnit8Array(base64String) {
 	return outputArray;
 }
 
+function ab2str(buf) {
+    // var enc = new TextDecoder('utf-8');
+    var enc = new TextDecoder('iso-8859-2');
+    var arr = new Uint8Array(buf);
+    console.log(enc.decode(arr));
+    // return enc.decode(arr);
+
+    // return String.fromCharCode.apply(null, new Uint16Array(toUint8Array));
+    return String.fromCharCode.apply(null, new Uint8Array(buf));
+}
+
 function notification({title, useNative}) {
 	if(useNative){
         var n = new Notification(title, {
@@ -33,4 +44,4 @@ function notification({title, useNative}) {
 	}
 }
 
-export {urlBase64ToUnit8Array, notification}
+export {urlBase64ToUnit8Array, ab2str, notification}

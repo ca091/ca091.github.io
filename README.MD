@@ -14,10 +14,11 @@
 - 触发应用添加横幅条件: 站点在同一浏览器中被访问至少两次，两次访问间隔至少为 5 分钟; ...
 
 ### Service Worker
+- chrome://inspect/#service-workers
 
 ![sw](assets/service_worker.png)
 
-- 控制控制策略：
+- 控制策略：
 ```
 static file: cacheFirst => fastest => cacheOnly
 data AJAX: networkFirst => networkOnly
@@ -27,8 +28,10 @@ data AJAX: networkFirst => networkOnly
 - Notification api
 - push api
 
+- [w3c push-api](http://w3c.github.io/push-api/)
 - [https://lavas.baidu.com](https://lavas.baidu.com)
 - [https://github.com/web-push-libs/web-push](https://github.com/web-push-libs/web-push)
+- [FCM](https://firebase.google.com/docs/cloud-messaging/?hl=zh-cn)
 
 ### Bugs
 - 谷歌推送服务器无法访问

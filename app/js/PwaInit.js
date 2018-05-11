@@ -1,4 +1,6 @@
 import {urlBase64ToUnit8Array} from './Utils.js';
+import {pulldata} from './xhr.js';
+
 class Pwa {
 	constructor({elAddTo}){
 		this.dfdPrompt = null;
@@ -40,7 +42,7 @@ class Pwa {
 		.then(permissionResult => {
 			if (permissionResult === 'granted') {
 				navigator.serviceWorker.ready.then(reg => {
-					reg.showNotification('ServiceWorker登记成功!', {
+					return reg.showNotification('ServiceWorker登记成功!', {
 						icon: '/app/img/favicon.ico',
 						body: 'can u see?'
 					});
@@ -89,10 +91,18 @@ class Pwa {
 			applicationServerKey: urlBase64ToUnit8Array('BEb2P46QjCQigSz8cpjj8I4s97tQrw-dxlh7MwUhdDQXEg-e11V7fzbye3xEysTcoDp2f6d-B-Q9QoEZdCOESPk')
 		})
 		.then(subscription => {
-			console.log(123);
-			console.log({subscription})
-			// 3. 发送推送订阅对象到服务器，具体实现中发送请求到后端api
-			// sendEndpointInSubscription(subscription);
+			console.log(subscription.endpoint);
+            // console.log(subscription.getKey('p256dh'));
+            // console.log(subscription.getKey('auth'));
+            // console.log(subscription.toJSON());
+            // console.log(subscription.toJSON().keys.p256dh);
+            // console.log(subscription.toJSON().keys.auth);
+            // 3. 发送推送订阅对象到服务器，具体实现中发送请求到后端api
+            // pulldata('http://192.168.199.188:8083/api_set', {
+				// endpoint: subscription.endpoint,
+				// p256dh: subscription.toJSON().keys.p256dh,
+				// auth: subscription.toJSON().keys.auth,
+            // });
 		})
 		.catch(e => {
 			if (Notification.permission === 'denied') {
@@ -103,10 +113,11 @@ class Pwa {
 
 		serviceWorkerReg.pushManager.getSubscription()
 		.then(uns => {
+		    console.log({uns});
 			if(uns){
 				uns.unsubscribe()
 				.then(successful => {
-					//
+                    console.log('已取消订阅')
 				})
 				.catch(e => {
 					//

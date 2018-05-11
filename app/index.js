@@ -1,12 +1,13 @@
 import './style/index.less';
 import Pwa from './js/PwaInit.js';
 import {initDom} from './js/initDom.js';
+// import {test} from './js/test.js';
 
 if(env=='dev'){
 	var btn = document.createElement('button');
 	btn.textContent = 'start serviceWorker';
 	btn.addEventListener('click', init);
-	document.body.appendChild(btn)
+	document.body.appendChild(btn);
 }else{
 	window.addEventListener('load', init)
 }

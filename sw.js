@@ -9,8 +9,8 @@ self.addEventListener('install', function(event) {
                 '/app/img/favicon.ico'
             ])
         }).then(function () {
-            self.skipWaiting();//强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
             console.log("SW installed");
+            return self.skipWaiting();//强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
         })
     );
 });
@@ -41,34 +41,55 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
     console.log('Caught a fetch!', event.request.url);
     event.respondWith(
-        caches.match(event.request).then(function (response) {
-            // 如果 Service Worker 有自己的返回，就直接返回，减少一次 http 请求
-            if(response) return response;
-            console.log(event.request.url, 'no cache, fetch request!')
-            //请求真实服远程服务
-            var request = event.request.clone();
-            return fetch(request).then(function (httpRes) {
-                //请求失败
-                if(!httpRes || httpRes.status !==200){
-                    return new Response('404!!', {
-                        headers: {
-                            'content-type': 'text/plain; charset=utf-8'
-                        }
+        async function () {
+            let {destination, url} = event.request;
+            if(!destination && url.match(/\/(reportlog|sockjs-node|api_)/g)){
+                console.log('request api');
+                //api networkFirst
+                var request = event.request.clone();
+                return fetch(request).then(function (httpRes) {
+                    if(!httpRes || httpRes.status !==200){
+                        return new Response('{code: 200, data: []}', {
+                            headers: {
+                                'Accept': '*/*',
+                                'Content-Type': 'application/json; charset=utf-8'
+                            }
+                        })
+                    }
+                    return httpRes;
+                })
+            }else{
+                return caches.match(event.request).then(response => {
+                    // 如果 Service Worker 有自己的返回，就直接返回，减少一次 http 请求
+                    if(response) return response;
+                    console.log(event.request.url, 'no cache, fetch request!')
+                    //请求真实服远程服务
+                    var request = event.request.clone();
+                    return fetch(request).then(function (httpRes) {
+                        //请求失败
+                        if(!httpRes || httpRes.status !==200){
+                            return new Response('404!!', {
+                                headers: {
+                                    'content-type': 'text/plain; charset=utf-8'
+                                }
+                            })
+                        };
+                        //请求成功, 再次缓存
+                        var responseClone = httpRes.clone();
+                        caches.open('test-v1').then(cache => {
+                            return cache.put(event.request, responseClone)
+                        });
+                        return httpRes;
                     })
-                };
-                //请求成功, 再次缓存
-                var responseClone = httpRes.clone();
-                caches.open('test-v1').then(function (cache) {
-                    cache.put(event.request, responseClone)
-                });
-                return httpRes;
-            })
-        })
+                })
+            }
+        }()
     )
 });
 
 //监听推送
 self.addEventListener('push', function (event) {
+    console.log('get push');
 	if (event.data) {
 		var promiseChain = Promise.resolve(event.data.json())
 		.then(data => self.registration.showNotification(data.title, {}));
