@@ -17,6 +17,9 @@ footer {
    -ms-flex: none;
        flex: none;
 }
+section + section {
+  margin-top: 10px;
+}
 .body {
   -moz-box-flex: 1;
    -ms-flex: 1;
@@ -29,13 +32,16 @@ footer {
   .grid {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: (minmax(120px, 3fr))[auto-fill];
-        grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
+    -ms-grid-columns: (minmax(120px, 3fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(120px, 3fr));
     grid-auto-rows: minmax(50px, auto);
+    border-top: 1px solid orange;
+    border-left: 1px solid orange;
   }
   .grid > div,
   .grid > li {
-    border: 1px solid orange;
+    border-right: 1px solid orange;
+    border-bottom: 1px solid orange;
     display: -moz-box;
     display: -ms-flexbox;
     display: flex;
