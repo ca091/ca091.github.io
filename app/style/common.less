@@ -10,8 +10,11 @@ header,footer{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
     grid-auto-rows: minmax(50px, auto);
+    border-top: 1px solid orange;
+    border-left: 1px solid orange;
     >div,>li{
-      border: 1px solid orange;
+      border-right: 1px solid orange;
+      border-bottom: 1px solid orange;
       display: flex;
       align-items: center;
       justify-content: center;
