@@ -1,5 +1,6 @@
 import './style/index.less';
 import Pwa from './js/PwaInit.js';
+import {initDom} from './js/initDom.js';
 
 if(env=='dev'){
 	var btn = document.createElement('button');
@@ -16,4 +17,5 @@ function init() {
 	pwa.initPush();
 	pwa.initNotification();
 	pwa.initAddToScreen();
+    initDom();
 }

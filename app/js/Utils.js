@@ -12,4 +12,25 @@ function urlBase64ToUnit8Array(base64String) {
 	return outputArray;
 }
 
-export {urlBase64ToUnit8Array}
+function notification({title, useNative}) {
+	if(useNative){
+        var n = new Notification(title, {
+            tag: 'normal',
+            icon: '/app/img/favicon.ico',
+            body: 'native!'
+        });
+        n.addEventListener('click', function(e){
+            console.log(e)
+        });
+        setTimeout(n.close.bind(n), 3000);
+	}else{
+        navigator.serviceWorker.ready.then(reg => {
+            reg.showNotification(title, {
+                icon: '/app/img/favicon.ico',
+                body: 'can u see?'
+            });
+        });
+	}
+}
+
+export {urlBase64ToUnit8Array, notification}

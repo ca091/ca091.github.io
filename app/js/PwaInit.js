@@ -26,16 +26,17 @@ class Pwa {
 		}
 	}
 	initNotification() {
-		return new Promise(function (resolve, reject) {
-			let permissionResult = Notification.requestPermission(function (result) {
-				// 旧版本
-				resolve(result);
-			});
-			if (permissionResult) {
-				// 新版本
-				permissionResult.then(resolve, reject);
-			}
-		})
+		// return new Promise(function (resolve, reject) {
+		// 	let permissionResult = Notification.requestPermission(function (result) {
+		// 		// 旧版本
+		// 		resolve(result);
+		// 	});
+		// 	if (permissionResult) {
+		// 		// 新版本
+		// 		permissionResult.then(resolve, reject);
+		// 	}
+		// })
+        Notification.requestPermission()
 		.then(permissionResult => {
 			if (permissionResult === 'granted') {
 				navigator.serviceWorker.ready.then(reg => {
@@ -45,7 +46,7 @@ class Pwa {
 					});
 				});
 			} else {
-				console.log('no permission');
+                alert('not support Notification')
 			}
 		});
 	}

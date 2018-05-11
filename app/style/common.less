@@ -1,6 +1,9 @@
 header,footer{
   flex: none;
 }
+section+section{
+  margin-top: 10px;
+}
 .body{
   flex: 1;
 }
@@ -11,7 +14,7 @@ header,footer{
 @supports (display: grid) {
   .grid{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 3fr));
     grid-auto-rows: minmax(50px, auto);
     border-top: 1px solid orange;
     border-left: 1px solid orange;
