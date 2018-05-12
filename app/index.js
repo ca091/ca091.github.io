@@ -1,4 +1,4 @@
-import './style/index.less';
+import './less/index.less';
 import Pwa from './js/PwaInit.js';
 import {initDom} from './js/initDom.js';
 // import {test} from './js/test.js';
