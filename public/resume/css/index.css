@@ -22,18 +22,18 @@ body{
 
 @keyframes down {
     from{
-        transform: translateY(0);
+        transform: translateY(-15%);
     }
     to{
-        transform: translateY(50%);
+        transform: translateY(35%);
     }
 }
 .show-left{
     position: relative;
+    transform: translateY(-15%);
     animation: down 650ms ease-in-out infinite alternate;
 }
 .right{
-    padding-top: 20px;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -148,6 +148,9 @@ body{
 .tc{
     text-align: center;
 }
+.tl{
+    text-align: left;
+}
 h4{
     margin: 0;
     text-align: justify;
@@ -176,6 +179,9 @@ ol{
         float: left;
         margin-right: 15px;
         transform: translateY(0) !important;
+    }
+    .right{
+        padding-top: 15px;
     }
     .show-left{
         display: none;
