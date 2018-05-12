@@ -21,9 +21,12 @@ function initLeftHight() {
 
 initLeftHight();
 
+//回到顶部
 dom_arrow_up.addEventListener('click', function () {
 	document.documentElement.scrollTop = 0;
+	document.body.scrollTop = 0;
 });
+//mob顶部动画
 dom_show_left.addEventListener('click', function () {
 	dom_left.style.transform = 'translateY(0)'
 });
