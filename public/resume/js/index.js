@@ -51,7 +51,7 @@ window.addEventListener('resize', function () {
 	setTimeout(initLeftHight, 100);
 });
 window.addEventListener('scroll', function () {
-	var t = document.documentElement.scrollTop;
+	var t = document.documentElement.scrollTop || document.body.scrollTop;
 	if(t>200){
 		dom_arrow_up.style.display = 'block';
 	}else{

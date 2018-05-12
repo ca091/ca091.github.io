@@ -103,6 +103,7 @@ body{
     border-bottom: 2px solid rgb(39,71,100);
 }
 .box-col{
+    text-indent: 3px;
     background-color: rgba(39,71,100,.2);
 }
 .box-list{
