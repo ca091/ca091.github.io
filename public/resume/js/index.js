@@ -1,0 +1,60 @@
+var $ = document.querySelector.bind(document);
+var dom_left = $('.left');
+var dom_arrow_up = $('.arrow-up');
+var dom_right = $('.right');
+var dom_show_left = $('.show-left');
+var dom_left_height = dom_left.clientHeight;
+var dom_right_height = dom_right.clientHeight;
+var window_height = window.innerHeight;
+
+function initLeftHight() {
+	if(getComputedStyle(dom_left).position == 'absolute'){
+		dom_left.style.height = dom_left_height + 'px';
+	}else{
+		if(dom_right_height>window_height){
+			dom_left.style.height = dom_right_height + 'px';
+		}else{
+			dom_left.style.minHeight = window_height + 'px';
+		}
+	}
+}
+
+initLeftHight();
+
+dom_arrow_up.addEventListener('click', function () {
+	document.documentElement.scrollTop = 0;
+});
+dom_show_left.addEventListener('click', function () {
+	dom_left.style.transform = 'translateY(0)'
+});
+var startPoint = {};
+var endPoint = {};
+dom_left.addEventListener('touchstart', function (e) {
+	startPoint.x = e.touches[0].clientX;
+	startPoint.y = e.touches[0].clientY;
+	startPoint.t = e.timeStamp;
+});
+dom_left.addEventListener('touchmove', function (e) {
+	endPoint.x = e.touches[0].clientX;
+	endPoint.y = e.touches[0].clientY;
+});
+dom_left.addEventListener('touchend', function (e) {
+	if(e.timeStamp - startPoint.t < 300){
+		dom_left.style.transform = 'translateY(-100%)'
+	}
+	if(startPoint.y - endPoint.y > 0){
+		dom_left.style.transform = 'translateY(-100%)'
+	}
+});
+
+window.addEventListener('resize', function () {
+	setTimeout(initLeftHight, 100);
+});
+window.addEventListener('scroll', function () {
+	var t = document.documentElement.scrollTop;
+	if(t>200){
+		dom_arrow_up.style.display = 'block';
+	}else{
+		dom_arrow_up.style.display = 'none';
+	}
+});

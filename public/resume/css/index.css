@@ -9,12 +9,29 @@ body{
     overflow: hidden;
 }
 .left{
-    padding-left: 15px;
-    padding-top: 40px;
-    width: 25%;
+    padding: 20px 0 10px 10px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    transform: translateY(-100%);
+    transition: all .3s ease-in-out;
     color: #fff;
     background-color: rgb(38,71,100);
-    float: left;
+}
+
+@keyframes down {
+    from{
+        transform: translateY(0);
+    }
+    to{
+        transform: translateY(50%);
+    }
+}
+.show-left{
+    position: relative;
+    animation: down 650ms ease-in-out infinite alternate;
 }
 .right{
     padding: 30px 30px 0 20px;
@@ -24,7 +41,8 @@ body{
 
 /*左侧个人信息*/
 .item-info{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    white-space: nowrap;
 }
 
 /*职业技能*/
@@ -90,7 +108,15 @@ body{
 .box-list{
     margin-top: 5px;
 }
-
+.arrow-up{
+    padding: 4px;
+    position: fixed;
+    right: 1px;
+    bottom: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 50%;
+    display: none;
+}
 /*自定义*/
 .cell{
     display: table-cell;
@@ -140,4 +166,16 @@ ol{
 }
 .mt30{
     margin-top: 30px;
+}
+
+@media screen and (min-width: 630px){
+    .left{
+        position: relative;
+        width: 24%;
+        float: left;
+        transform: translateY(0) !important;
+    }
+    .show-left{
+        display: none;
+    }
 }

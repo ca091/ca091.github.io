@@ -35,3 +35,6 @@ data AJAX: networkFirst => networkOnly
 
 ### Bugs
 - 谷歌推送服务器无法访问
+
+### 资源
+- [font awesome](http://fontawesome.dashgame.com)

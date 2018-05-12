@@ -40,7 +40,7 @@
         </div>
         <div class="item-skill">
             Vue
-            <div class="progress progress-80"></div>
+            <div class="progress progress-90"></div>
         </div>
         <div class="item-skill">
             Node
@@ -48,9 +48,14 @@
         </div>
         <div class="item-skill">
             webpack
-            <div class="progress progress-75"></div>
+            <div class="progress progress-85"></div>
         </div>
     </div>
+
+    <div class="show-left tc">
+        <span class="fa fa-fw fa-angle-double-down"></span>
+    </div>
+
     <div class="right">
         <div>
             <div class="title-right">
@@ -227,21 +232,13 @@
                 <h4>通旅环球电商项目: <a href="http://h5.test.tonglvhuanqiu.com/shop/?#/">http://h5.test.tonglvhuanqiu.com/shop/?#/</a></h4>
             </div>
         </div>
-
     </div>
 </div>
 
-<script>
-    var $ = document.querySelector.bind(document);
-    var dom_left = $('.left');
-    var dom_right = $('.right');
-    var dom_right_height = dom_right.clientHeight;
-    var window_height = window.innerHeight;
-    if(dom_right_height>window_height){
-        dom_left.style.height = dom_right_height + 'px';
-    }else{
-        dom_left.style.minHeight = window_height + 'px';
-    }
-</script>
+<div class="arrow-up">
+    <span class="fa fa-fw fa-arrow-up"></span>
+</div>
+
+<script async src="js/index.js"></script>
 </body>
 </html>
