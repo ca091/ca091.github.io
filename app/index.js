@@ -1,13 +1,14 @@
 import './less/index.less';
 import Pwa from './js/PwaInit.js';
-import {initDom} from './js/initDom.js';
+import {initDom, initDomWithoutPush} from './js/initDom.js';
 // import {test} from './js/test.js';
 
-if(env=='dev'){
-	var btn = document.createElement('button');
+if(env==='dev'){
+	let btn = document.createElement('button');
 	btn.textContent = 'start serviceWorker';
 	btn.addEventListener('click', init);
 	document.body.appendChild(btn);
+	initDomWithoutPush();
 }else{
 	window.addEventListener('load', init)
 }

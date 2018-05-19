@@ -23,22 +23,18 @@ export function pulldataPost(url, data) {
 }
 
 export function api_request(url, method, data){
-    fetch(url, {
+    return fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json"
         }
     }).then(response => {
-        console.log(response)
+        console.log(response);
         if(response.ok) {
             return response.text();
         }
-    }).then(function(json) {
-        console.log(json)
-    }).catch(function (error) {
-        console.error('error: ', error)
-    });
+    })
 }
 
 

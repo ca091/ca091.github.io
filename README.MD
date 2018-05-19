@@ -15,6 +15,7 @@
 
 ### Service Worker
 - chrome://inspect/#service-workers
+- [Workbox 库](https://developers.google.com/web/tools/workbox/)
 
 ![sw](assets/service_worker.png)
 
@@ -34,7 +35,7 @@ data AJAX: networkFirst => networkOnly
 - [FCM](https://firebase.google.com/docs/cloud-messaging/?hl=zh-cn)
 
 ### Bugs
-- 谷歌推送服务器无法访问
+- 谷歌推送服务器无法访问, 更换浏览器火狐调试
 
 ### 资源
 - [font awesome](http://fontawesome.dashgame.com)

@@ -1,5 +1,8 @@
 import {urlBase64ToUnit8Array} from './Utils.js';
-import {pulldata} from './xhr.js';
+import {pulldata, api_request} from "./xhr";
+
+const serverApi = 'http://localhost:8083/api_set';
+const publicKey = 'BKmzm3addDa0_hQNkJ0Readn9V2-mIhtdNvfq_yOzYpY14hGhSGJ5ZD4flqSCBDEwlwxjiaLHparbg2n0h0gxOU';
 
 class Pwa {
 	constructor({elAddTo}){
@@ -88,21 +91,26 @@ class Pwa {
 		console.log('browser subscribe');
 		serviceWorkerReg.pushManager.subscribe({
 			userVisibleOnly: true,
-			applicationServerKey: urlBase64ToUnit8Array('BEb2P46QjCQigSz8cpjj8I4s97tQrw-dxlh7MwUhdDQXEg-e11V7fzbye3xEysTcoDp2f6d-B-Q9QoEZdCOESPk')
+			applicationServerKey: urlBase64ToUnit8Array(publicKey)
 		})
 		.then(subscription => {
-			console.log(subscription.endpoint);
+			// console.log(subscription.endpoint);
             // console.log(subscription.getKey('p256dh'));
             // console.log(subscription.getKey('auth'));
             // console.log(subscription.toJSON());
             // console.log(subscription.toJSON().keys.p256dh);
             // console.log(subscription.toJSON().keys.auth);
             // 3. 发送推送订阅对象到服务器，具体实现中发送请求到后端api
-            // pulldata('http://192.168.199.188:8083/api_set', {
+            return api_request(serverApi, 'post', {
+				endpoint: subscription.endpoint,
+				p256dh: subscription.toJSON().keys.p256dh,
+				auth: subscription.toJSON().keys.auth,
+            })
+            // return pulldata(serverApi, {
 				// endpoint: subscription.endpoint,
 				// p256dh: subscription.toJSON().keys.p256dh,
-				// auth: subscription.toJSON().keys.auth,
-            // });
+				// auth: subscription.toJSON().keys.auth
+            // })
 		})
 		.catch(e => {
 			if (Notification.permission === 'denied') {

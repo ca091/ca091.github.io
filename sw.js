@@ -1,3 +1,8 @@
+importScripts('./app/js/swImport.js');
+if(Swi){
+    Swi.l('from swImport.js')
+}
+
 self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open('test-v1').then(function (cache) {
@@ -91,8 +96,20 @@ self.addEventListener('fetch', function(event) {
 self.addEventListener('push', function (event) {
     console.log('get push');
 	if (event.data) {
-		var promiseChain = Promise.resolve(event.data.json())
-		.then(data => self.registration.showNotification(data.title, {}));
+		let promiseChain = Promise.resolve(event.data.json())
+		.then(data => self.registration.showNotification(data.title, {
+			icon: '/app/img/favicon.ico',
+			body: data.body,
+			tag: data.tag
+        }));
 		event.waitUntil(promiseChain);
 	}
+});
+
+self.addEventListener('notificationclick', function(event) {
+	console.log('notificationclick')
+});
+
+self.addEventListener('notificationclose', function(event) {
+    console.log('notificationclose')
 });

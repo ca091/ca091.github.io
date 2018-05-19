@@ -1,17 +1,21 @@
 import {notification} from './Utils.js'
-import {pulldata, api_request} from './xhr.js'
+import {api_request} from './xhr.js'
 
 export function initDom() {
-    var t_notification = document.querySelector('.t-notification');
-    var t_api = document.querySelector('.t-api');
-    var t_api_no = document.querySelector('.t-api-no');
-    t_notification.addEventListener('click', e => {
-        notification({title: 'test...', useNative: true})
-    });
-    t_api.addEventListener('click', e => {
-        api_request('/reportlog', 'POST', {type: 0, code: 1, content: 'tte'})
-    });
-    t_api_no.addEventListener('click', e => {
-        api_request('/list', 'POST', {type: 0})
-    })
+
+}
+
+export function initDomWithoutPush() {
+	var t_notification = document.querySelector('.t-notification');
+	var t_api = document.querySelector('.t-api');
+	var t_api_no = document.querySelector('.t-api-no');
+	t_notification.addEventListener('click', e => {
+		notification({title: 'test...', useNative: true})
+	});
+	t_api.addEventListener('click', e => {
+		api_request('/reportlog', 'POST', {type: 0, code: 1, content: 'tte'})
+	});
+	t_api_no.addEventListener('click', e => {
+		api_request('/list', 'POST', {type: 0})
+	})
 }
