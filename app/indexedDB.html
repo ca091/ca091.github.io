@@ -96,30 +96,20 @@
         }
         function resetTable(table) {
             table.innerHTML = '';
-            var tr = document.createElement('tr')
-            var th_isbn = document.createElement('th')
-            var th_title = document.createElement('th')
-            var th_author = document.createElement('th')
-            th_isbn.textContent = 'isbn'
-            th_title.textContent = 'title'
-            th_author.textContent = 'author'
-            tr.appendChild(th_isbn)
-            tr.appendChild(th_title)
-            tr.appendChild(th_author)
-            table.appendChild(tr)
+            appendItem(table, {isbn: 'isbn', title: 'title', author: 'author'});
         }
-        function appendItem(dom, item) {
-            var tr = document.createElement('tr')
-            var td_isbn = document.createElement('td')
-            var td_title = document.createElement('td')
-            var td_author = document.createElement('td')
-            td_isbn.textContent = item.isbn
-            td_title.textContent = item.title
-            td_author.textContent = item.author
-            tr.appendChild(td_isbn)
-            tr.appendChild(td_title)
-            tr.appendChild(td_author)
-            dom.appendChild(tr)
+        function appendItem(table, item) {
+            var tr = document.createElement('tr');
+            var td_isbn = document.createElement('td');
+            var td_title = document.createElement('td');
+            var td_author = document.createElement('td');
+            td_isbn.textContent = item.isbn;
+            td_title.textContent = item.title;
+            td_author.textContent = item.author;
+            tr.appendChild(td_isbn);
+            tr.appendChild(td_title);
+            tr.appendChild(td_author);
+            table.appendChild(tr)
         }
     </script>
 </body>

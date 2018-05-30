@@ -50,6 +50,7 @@ function put(item, database) {
 
     store.put(item);
     // store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
+    // store.add({title: "Quarry Memories", author: "Fred", isbn: 123456});
 
     tx.oncomplete = function() {
         console.log('complete')
