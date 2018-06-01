@@ -30,7 +30,6 @@
             <th>author</th>
         </tr>
     </table>
-    <button id="btn-all">all</button>
 
     <button id="btn-clear">clear</button>
 
@@ -44,73 +43,7 @@
         <input type="text" placeholder="isbn (key)" id="input-delete">
         <button id="btn-del">delete</button>
     </div>
-    <script src="./js/indexedDB.js"></script>
-    <script>
-        var $ = document.querySelector.bind(document)
-        var table = $('table')
-        window.onload = init;
-        function init() {
-            var dom_all = $('#btn-all')
-            var dom_delete = $('#btn-del')
-            var dom_clear = $('#btn-clear')
-            var dom_add = $('#btn-add')
 
-            var input_title = $('#input-title')
-            var input_author = $('#input-author')
-            var input_delete = $('#input-delete')
-
-            dom_all.addEventListener('click', function (e) {
-                resetTable(table)
-                dbManager.all(function (arr) {
-                    for(var i of arr){
-                        appendItem(table, i)
-                    }
-                });
-            });
-
-            dom_delete.addEventListener('click', function (e) {
-                dbManager.del(input_delete.value);
-                resetTable(table)
-                dbManager.all(function (arr) {
-                    for(var i of arr){
-                        appendItem(table, i)
-                    }
-                });
-            });
-
-            dom_clear.addEventListener('click', function (e) {
-                resetTable(table)
-                dbManager.clear()
-            });
-
-            dom_add.addEventListener('click', function (e) {
-                if(input_title.value.trim()=='' || input_author.value.trim()=='') return;
-                dbManager.put({
-                    title: input_title.value,
-                    author: input_author.value
-                });
-                dbManager.get(input_title.value, function (i) {
-                    appendItem(table, i)
-                })
-            })
-        }
-        function resetTable(table) {
-            table.innerHTML = '';
-            appendItem(table, {isbn: 'isbn', title: 'title', author: 'author'});
-        }
-        function appendItem(table, item) {
-            var tr = document.createElement('tr');
-            var td_isbn = document.createElement('td');
-            var td_title = document.createElement('td');
-            var td_author = document.createElement('td');
-            td_isbn.textContent = item.isbn;
-            td_title.textContent = item.title;
-            td_author.textContent = item.author;
-            tr.appendChild(td_isbn);
-            tr.appendChild(td_title);
-            tr.appendChild(td_author);
-            table.appendChild(tr)
-        }
-    </script>
+    <script async src="/dist/indexedDB.js"></script>
 </body>
 </html>

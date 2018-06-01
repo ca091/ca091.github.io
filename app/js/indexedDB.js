@@ -1,137 +1,78 @@
+import {logic, domUtils} from 'bitutilsofweb';
+
 if(!window.indexedDB){
     alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.")
 }else{
-    init();
+    init().catch(e => console.warn(e));
 }
 
-var dbManager = {
-    db: null,
-    put: put,
-    get: get,
-    all: all,
-    del: del,
-    clear: clear
+function resetTable(table) {
+    table.innerHTML = '';
+    appendItem(table, {isbn: 'isbn', title: 'title', author: 'author'});
 }
 
-function init() {
-    var request = indexedDB.open("library"), db;
+function appendItem(table, item) {
+    let tr = document.createElement('tr');
+    let td_isbn = document.createElement('td');
+    let td_title = document.createElement('td');
+    let td_author = document.createElement('td');
+    td_isbn.textContent = item.isbn;
+    td_title.textContent = item.title;
+    td_author.textContent = item.author;
+    tr.dataset.id = item.isbn;
+    tr.appendChild(td_isbn);
+    tr.appendChild(td_title);
+    tr.appendChild(td_author);
+    table.appendChild(tr)
+}
 
-    //版本升级时调用一次
-    request.onupgradeneeded = function() {
-        console.log('onupgradeneeded')
-        // The database did not previously exist, so create object stores and indexes.
-        db = request.result;
-        var store = db.createObjectStore("books", {keyPath: "isbn", autoIncrement: true});
+async function init() {
+    let {$} = domUtils;
+    let {DBManager} = logic;
+    let dbManager = new DBManager();
+    const storeName = 'books';
+    //绑定钩子, 在onupgradeneeded事件触发时新建数据库表
+    dbManager.hooks.createStore.tapPromise('A', db => {
+        let store = db.createObjectStore(storeName, {keyPath: "isbn", autoIncrement: true});
         store.createIndex("by_title", "title", {unique: true});
         store.createIndex("by_author", "author");
+        return Promise.resolve(store);
+    });
 
-        // Populate with initial data.
-        // store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
-        // store.put({title: "Water Buffaloes", author: "Fred", isbn: 234567});
-        // store.put({title: "Bedrock Nights", author: "Barney", isbn: 345678});
-    };
+    let table = $('table');
+    let dom_clear = $('#btn-clear');
+    let dom_add = $('#btn-add');
+    let dom_delete = $('#btn-del');
 
-    request.onerror = function (e) {
-        console.log(e.target.errorCode)
+    let input_title = $('#input-title');
+    let input_author = $('#input-author');
+    let input_delete = $('#input-delete');
+
+    await dbManager.open('library').catch(e => console.warn(e));
+    let data = await dbManager.all('by_author', storeName);
+    for(let i of data){
+        appendItem(table, i)
     }
-    request.onsuccess = function() {
-        db = request.result;
-        console.log('创建或打开数据库成功');
-        dbManager.db = db;
-    }
-}
 
-function put(item, database) {
-    var db = this.db || database;
-    if(!db) return;
+    dom_delete.addEventListener('click', async e => {
+        let id = Number(input_delete.value);
+        await dbManager.del(id, storeName);
+        $(`table tr[data-id=\"${id}\"]`).remove();
+    });
 
-    var tx = db.transaction("books", "readwrite");
-    var store = tx.objectStore("books");
+    dom_clear.addEventListener('click', () => {
+        dbManager.clear(storeName).catch(e => console.warn(e));
+        resetTable(table);
+    });
 
-    store.put(item);
-    // store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
-    // store.add({title: "Quarry Memories", author: "Fred", isbn: 123456});
-
-    tx.oncomplete = function() {
-        console.log('complete')
-        // All requests have succeeded and the transaction has committed.
-    }
-}
-
-function get(key, handler, database) {
-    var db = this.db || database;
-    if(!db) return;
-
-    var tx = db.transaction("books", "readonly");
-    var store = tx.objectStore("books");
-    var index = store.index("by_title");
-
-    var request = index.get(key);
-    request.onsuccess = function() {
-        var matching = request.result;
-        if (matching !== undefined) {
-            // A match was found.
-            console.log(matching.isbn, matching.title, matching.author);
-            handler(matching)
-        } else {
-            // No match was found.
-            console.log(null);
-        }
-    }
-}
-
-function all(cb, database) {
-    var db = this.db || database;
-    if(!db) return;
-    var tx = db.transaction("books", "readonly");
-    var store = tx.objectStore("books");
-    var index = store.index("by_author");
-
-    var result = [];
-    // var request = index.openCursor(IDBKeyRange.only("Fred"));
-    var request = index.openCursor();
-    request.onsuccess = function() {
-        var cursor = request.result;
-        if (cursor) {
-            // Called for each matching record.
-            console.log(cursor.value.isbn, cursor.value.title, cursor.value.author);
-            result.push({
-                isbn: cursor.value.isbn,
-                title: cursor.value.title,
-                author: cursor.value.author
-            })
-            cursor.continue();
-        } else {
-            // No more matching records.
-            console.log(null)
-            cb(result)
-        }
-    }
-}
-
-function del(key, database) {
-    var db = this.db || database;
-    if(!db) return;
-
-    var tx = db.transaction("books", "readwrite");
-    var store = tx.objectStore("books");
-    var request = store.delete(Number(key));
-    request.onsuccess = function () {
-        console.log('deleted', key)
-    }
-    request.onerror = function (e) {
-        console.log(e)
-    }
-}
-
-function clear(database) {
-    var db = this.db || database;
-    if(!db) return;
-
-    var tx = db.transaction("books", "readwrite");
-    var store = tx.objectStore("books");
-    var request = store.clear();
-    request.onsuccess = function () {
-        console.log('cleared')
-    }
+    dom_add.addEventListener('click', async () => {
+        if(input_title.value.trim()=='' || input_author.value.trim()=='') return;
+        let item = {
+            title: input_title.value,
+            author: input_author.value
+        };
+        await dbManager.put(item, storeName).catch(e => console.warn(e));
+        let i = await dbManager.get({key: 'by_title', val: item.title}, storeName);
+        appendItem(table, i)
+    })
 }

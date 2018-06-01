@@ -1058,6 +1058,12 @@ binaryextensions@2:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/binaryextensions/-/binaryextensions-2.1.1.tgz#3209a51ca4a4ad541a3b8d3d6a6d5b83a2485935"
 
+bitutilsofweb@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/bitutilsofweb/-/bitutilsofweb-1.1.6.tgz#af277df940415207c3cd9da815adc04d0b5271c0"
+  dependencies:
+    tapable "^1.0.0"
+
 bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
