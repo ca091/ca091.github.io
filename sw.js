@@ -44,49 +44,15 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-    console.log('Caught a fetch!', event.request.url);
+    let {destination, url} = event.request;
+    let request = event.request.clone();
+    console.log(`Caught a fetch: ${url} - ${destination}`);
     event.respondWith(
         async function () {
-            let {destination, url} = event.request;
-            if(!destination && url.match(/\/(reportlog|sockjs-node|api_)/g)){
-                console.log('request api');
-                //api networkFirst
-                var request = event.request.clone();
-                return fetch(request).then(function (httpRes) {
-                    if(!httpRes || httpRes.status !==200){
-                        return new Response('{code: 200, data: []}', {
-                            headers: {
-                                'Accept': '*/*',
-                                'Content-Type': 'application/json; charset=utf-8'
-                            }
-                        })
-                    }
-                    return httpRes;
-                })
+            if(!destination && url.match(/\/(api_|sockjs-node|__webpack_hmr)/g)){
+                return networkFirst(request);
             }else{
-                return caches.match(event.request).then(response => {
-                    // 如果 Service Worker 有自己的返回，就直接返回，减少一次 http 请求
-                    if(response) return response;
-                    console.log(event.request.url, 'no cache, fetch request!')
-                    //请求真实服远程服务
-                    var request = event.request.clone();
-                    return fetch(request).then(function (httpRes) {
-                        //请求失败
-                        if(!httpRes || httpRes.status !==200){
-                            return new Response('404!!', {
-                                headers: {
-                                    'content-type': 'text/plain; charset=utf-8'
-                                }
-                            })
-                        };
-                        //请求成功, 再次缓存
-                        var responseClone = httpRes.clone();
-                        caches.open('test-v1').then(cache => {
-                            return cache.put(event.request, responseClone)
-                        });
-                        return httpRes;
-                    })
-                })
+                return cacheFirst(request)
             }
         }()
     )
@@ -113,3 +79,37 @@ self.addEventListener('notificationclick', function(event) {
 self.addEventListener('notificationclose', function(event) {
     console.log('notificationclose')
 });
+
+async function networkFirst(request) {
+    console.log('networkFirst');
+    let httpRes = await fetch(request);
+    if(!httpRes || httpRes.status !==200){
+        return new Response('{code: 200, data: []}', {
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+    }
+    return httpRes;
+}
+
+async function cacheFirst(request) {
+    console.log('cacheFirst');
+    let response = await caches.match(request);
+    if(response) return response;
+    console.log(`${request.url} no cache, fetch request!`);
+    //请求真实服远程服务
+    let httpRes = await fetch(request);
+    if(!httpRes || httpRes.status !==200){
+        return new Response('404!!', {
+            headers: {
+                'content-type': 'text/plain; charset=utf-8'
+            }
+        })
+    }
+    //请求成功, 再次缓存
+    let cache = await caches.open('test-v1');
+    await cache.put(request, httpRes.clone());
+    return httpRes;
+}
