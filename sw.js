@@ -96,12 +96,7 @@ async function onlyNetwork(request){
     console.log('onlyNetwork');
     let httpRes = await fetch(request);
     if(!httpRes || httpRes.status !==200){
-        return new Response('{code: 200, data: []}', {
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        })
+        return getResponseNot200()
     }
     return httpRes;
 }
@@ -112,13 +107,9 @@ async function networkFirst(request) {
     if(!httpRes || httpRes.status !==200){
         let response = await caches.match(request);
         if(response) return response;
-        return new Response('{code: 200, data: []}', {
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        })
+        return getResponseNot200()
     }
+    //请求成功, 则缓存
     await cacheResponse('test-v3', request, httpRes.clone());
     return httpRes;
 }
@@ -128,14 +119,9 @@ async function cacheFirst(request) {
     let response = await caches.match(request);
     if(response) return response;
     console.log(`${request.url} no cache, fetch request!`);
-    //请求真实服远程服务
     let httpRes = await fetch(request);
     if(!httpRes || httpRes.status !==200){
-        return new Response('404!!', {
-            headers: {
-                'content-type': 'text/plain; charset=utf-8'
-            }
-        })
+        return getResponseNot200()
     }
     //请求成功, 再次缓存
     await cacheResponse('test-v2', request, httpRes.clone());
@@ -145,4 +131,13 @@ async function cacheFirst(request) {
 async function cacheResponse(storeName, httpReq, httpRes){
     let cache = await caches.open(storeName);
     return cache.put(httpReq, httpRes);
+}
+
+function getResponseNot200(){
+    return new Response('{code: 200, data: []}', {
+        headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    })
 }
