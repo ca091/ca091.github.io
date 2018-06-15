@@ -2,13 +2,9 @@ import {notification} from './Utils.js'
 import {api_request} from './xhr.js'
 
 export function initDom() {
-
-}
-
-export function initDomWithoutPush() {
-	var t_notification = document.querySelector('.t-notification');
-	var t_api = document.querySelector('.t-api');
-	var t_api_no = document.querySelector('.t-api-no');
+	let t_notification = document.querySelector('.t-notification');
+	let t_api = document.querySelector('.t-api');
+	let t_api_no = document.querySelector('.t-api-no');
 	t_notification.addEventListener('click', e => {
 		notification({title: 'test...', useNative: true})
 	});

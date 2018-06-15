@@ -62,6 +62,8 @@ self.addEventListener('fetch', event => {
                     return onlyNetwork(request)
                 }else if(url.match(/\/(api_|get)/g)){
                     return networkFirst(request)
+                }else{
+                    return cacheFirst(request)
                 }
             }else{
                 return cacheFirst(request)
