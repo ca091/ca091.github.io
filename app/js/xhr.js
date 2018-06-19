@@ -26,9 +26,8 @@ export function api_request(url, method, data){
     return fetch(url, {
         method: method,
         body: JSON.stringify(data),
-        credentials: 'include',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     }).then(response => {
         console.log(response);

@@ -1,7 +1,7 @@
 import {urlBase64ToUnit8Array, appendMsgDom} from './Utils.js';
 import {pulldata, api_request} from "./xhr";
 
-const serverApi = 'https://47.93.35.239/net_set';
+const serverApi = 'http://47.93.35.239/net_set';
 // const serverApi = 'http://localhost:8000/net_set';
 // const serverApi = 'http://localhost:8083/net_set';
 const publicKey = 'BKmzm3addDa0_hQNkJ0Readn9V2-mIhtdNvfq_yOzYpY14hGhSGJ5ZD4flqSCBDEwlwxjiaLHparbg2n0h0gxOU';
