@@ -5,6 +5,7 @@ export function initDom() {
 	let t_notification = document.querySelector('.t-notification');
 	let t_api = document.querySelector('.t-api');
 	let t_api_no = document.querySelector('.t-api-no');
+
 	t_notification.addEventListener('click', e => {
 		notification({title: 'test...', useNative: true})
 	});
@@ -13,5 +14,15 @@ export function initDom() {
 	});
 	t_api_no.addEventListener('click', e => {
 		api_request('/list', 'POST', {type: 0}).then(data => console.log(data))
-	})
+	});
+}
+
+export function initDomWithPwa(pwa) {
+    let re_subscribe = document.querySelector('.re-subscribe');
+
+    re_subscribe.addEventListener('click', e => {
+        pwa.cancelPush().then(() => {
+        	pwa.initPush()
+		})
+    })
 }

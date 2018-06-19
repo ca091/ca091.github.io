@@ -58,7 +58,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         async function () {
             if(!destination){
-                if(url.match(/\/(sockjs-node|__webpack_hmr)/g)){
+                if(url.match(/\/(net_|sockjs-node|__webpack_hmr)/g)){
                     return onlyNetwork(request)
                 }else if(url.match(/\/(api_|get)/g)){
                     return networkFirst(request)
@@ -76,8 +76,7 @@ self.addEventListener('fetch', event => {
 self.addEventListener('push', event => {
     console.log('get push');
 	if (event.data) {
-		let promiseChain = Promise.resolve(event.data.json())
-		.then(data => self.registration.showNotification(data.title, {
+		let promiseChain = Promise.resolve(event.data.json()).then(data => self.registration.showNotification(data.title, {
 			icon: '/app/img/favicon.ico',
 			body: data.body,
 			tag: data.tag
@@ -87,7 +86,12 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', function(event) {
-	console.log('notificationclick')
+    console.log('[Service Worker] Notification click Received.');
+    let notification = event.notification;
+    notification.close();
+    event.waitUntil(
+        clients.openWindow(notification.data.url)
+    );
 });
 
 self.addEventListener('notificationclose', function(event) {

@@ -44,4 +44,10 @@ function notification({title, useNative}) {
 	}
 }
 
-export {urlBase64ToUnit8Array, ab2str, notification}
+function appendMsgDom(info) {
+    let p = document.createElement('p');
+    p.textContent = info;
+    document.querySelector('#infos').appendChild(p);
+}
+
+export {urlBase64ToUnit8Array, ab2str, notification, appendMsgDom}

@@ -1,7 +1,9 @@
-import {urlBase64ToUnit8Array} from './Utils.js';
+import {urlBase64ToUnit8Array, appendMsgDom} from './Utils.js';
 import {pulldata, api_request} from "./xhr";
 
-const serverApi = 'http://localhost:8083/api_set';
+const serverApi = 'http://47.93.35.239/net_set';
+// const serverApi = 'http://localhost:8000/net_set';
+// const serverApi = 'http://localhost:8083/net_set';
 const publicKey = 'BKmzm3addDa0_hQNkJ0Readn9V2-mIhtdNvfq_yOzYpY14hGhSGJ5ZD4flqSCBDEwlwxjiaLHparbg2n0h0gxOU';
 
 class Pwa {
@@ -13,11 +15,12 @@ class Pwa {
 		if('serviceWorker' in navigator){
 			return navigator.serviceWorker.register('/sw.js', {scope: '/'})
 				.then(registration => {
-					console.log('ServiceWorker登记成功，范围为', registration.scope);
+                    appendMsgDom(`ServiceWorker登记成功，范围为${registration.scope}`);
 					return registration;
 				})
 				.catch(function (err) {
-					console.log('ServiceWorker登记失败：', err);
+                    appendMsgDom('ServiceWorker登记失败：');
+                    appendMsgDom(err);
 				});
 		}else{
 			alert('not support serviceWorker')
@@ -25,10 +28,41 @@ class Pwa {
 	}
 	initPush() {
 		if('PushManager' in window){
-			navigator.serviceWorker.ready.then(reg => this.subscribe(reg));
+			navigator.serviceWorker.ready.then(reg => {
+                reg.pushManager.getSubscription().then(subscription => {
+                	//未订阅
+					if(!subscription){
+                        appendMsgDom('begin subscribe...');
+						this.subscribe(reg)
+					}else{
+                        appendMsgDom('already subscribed!!!');
+					}
+                });
+			});
 		}else{
 			alert('not support PushManager')
 		}
+	}
+	cancelPush(){
+		return new Promise((resolve, reject) => {
+            navigator.serviceWorker.ready.then(reg => {
+                reg.pushManager.getSubscription().then(subscription => {
+                    if(subscription){
+                        subscription.unsubscribe().then(data => {
+                            appendMsgDom('cancel subscribe success');
+                            resolve()
+                        })
+						.catch(e => {
+							appendMsgDom('cancel subscribe fail');
+							appendMsgDom(e);
+                            reject(e)
+						});
+                    }else{
+                        resolve()
+					}
+                });
+            });
+		})
 	}
 	initNotification() {
 		// return new Promise(function (resolve, reject) {
@@ -75,20 +109,20 @@ class Pwa {
 
 		function handleResult(choiceResult, e){
 			if (choiceResult.outcome === 'dismissed') {
-				console.log('用户取消安装应用');
+                appendMsgDom('用户取消安装应用');
 				// 存储事件
 				if(!this.dfdPrompt && e) this.dfdPrompt = e;
 				button.style.display = 'block';
 			}
 			else {
-				console.log('用户安装了应用');
+                appendMsgDom('用户安装了应用');
 				this.dfdPrompt = null;
 				button.style.display = 'none';
 			}
 		}
 	}
 	subscribe(serviceWorkerReg) {
-		console.log('browser subscribe');
+		//浏览器向FCM服务(火狐不同)请求生成subscription
 		serviceWorkerReg.pushManager.subscribe({
 			userVisibleOnly: true,
 			applicationServerKey: urlBase64ToUnit8Array(publicKey)
@@ -101,35 +135,20 @@ class Pwa {
             // console.log(subscription.toJSON().keys.p256dh);
             // console.log(subscription.toJSON().keys.auth);
             // 3. 发送推送订阅对象到服务器，具体实现中发送请求到后端api
+            appendMsgDom('browser subscribe success, send subscription to server');
             return api_request(serverApi, 'post', {
 				endpoint: subscription.endpoint,
 				p256dh: subscription.toJSON().keys.p256dh,
 				auth: subscription.toJSON().keys.auth,
             })
-            // return pulldata(serverApi, {
-				// endpoint: subscription.endpoint,
-				// p256dh: subscription.toJSON().keys.p256dh,
-				// auth: subscription.toJSON().keys.auth
-            // })
 		})
 		.catch(e => {
+            appendMsgDom('browser subscribe fail');
+            appendMsgDom(e);
+			console.warn(e);
 			if (Notification.permission === 'denied') {
 				// 用户拒绝了订阅请求
 				console.log('用户拒绝了订阅请求')
-			}
-		});
-
-		serviceWorkerReg.pushManager.getSubscription()
-		.then(uns => {
-		    console.log({uns});
-			if(uns){
-				uns.unsubscribe()
-				.then(successful => {
-                    console.log('已取消订阅')
-				})
-				.catch(e => {
-					//
-				});
 			}
 		});
 	}
