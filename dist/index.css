@@ -73,3 +73,6 @@ section + section {
     margin: 3px;
   }
 }
+#infos {
+  max-height: 200px;
+}
