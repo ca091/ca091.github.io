@@ -1,5 +1,5 @@
 import {urlBase64ToUnit8Array, appendMsgDom} from './Utils.js';
-import {pulldata, api_request} from "./xhr";
+import {api_request} from "./xhr";
 
 const serverApi = 'http://47.93.35.239/net_set';
 // const serverApi = 'http://localhost:8000/net_set';
@@ -16,7 +16,6 @@ class Pwa {
 			navigator.serviceWorker.register('/sw.js', {scope: '/'})
 				.then(registration => {
                     appendMsgDom(`ServiceWorker登记成功，范围为${registration.scope}`);
-					return registration;
 				})
 				.catch(function (err) {
                     appendMsgDom('ServiceWorker登记失败：');
@@ -83,12 +82,7 @@ class Pwa {
         Notification.requestPermission()
 		.then(permissionResult => {
 			if (permissionResult === 'granted') {
-				navigator.serviceWorker.ready.then(reg => {
-					return reg.showNotification('ServiceWorker登记成功!', {
-						icon: '/app/img/favicon.ico',
-						body: 'can u see?'
-					});
-				});
+                appendMsgDom('Notification is supported');
 			} else {
                 alert('not support Notification')
 			}
@@ -153,7 +147,7 @@ class Pwa {
 			console.warn(e);
 			if (Notification.permission === 'denied') {
 				// 用户拒绝了订阅请求
-				console.log('用户拒绝了订阅请求')
+                appendMsgDom('用户拒绝了订阅请求')
 			}
 		});
 	}
