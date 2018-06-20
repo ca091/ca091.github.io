@@ -13,7 +13,7 @@ class Pwa {
 	}
 	initSW() {
 		if('serviceWorker' in navigator){
-			return navigator.serviceWorker.register('/sw.js', {scope: '/'})
+			navigator.serviceWorker.register('/sw.js', {scope: '/'})
 				.then(registration => {
                     appendMsgDom(`ServiceWorker登记成功，范围为${registration.scope}`);
 					return registration;
@@ -22,7 +22,12 @@ class Pwa {
                     appendMsgDom('ServiceWorker登记失败：');
                     appendMsgDom(err);
 				});
-		}else{
+			//监听sw消息
+            navigator.serviceWorker.addEventListener("message", event => {
+                let msg = event.data;
+                appendMsgDom(`msg received from sw : ${msg}`);
+            });
+        }else{
 			alert('not support serviceWorker')
 		}
 	}

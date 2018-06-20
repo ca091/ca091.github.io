@@ -1,28 +1,12 @@
 importScripts('./app/js/swImport.js');
-if(Swi){
-    Swi.l('from swImport.js')
-}
 
-/**
- * test-v1: 初始化缓存
- * test-v2: 优先走缓存的缓存
- * test-v3: 优先走网络的缓存
- */
-
-const v = '0.2';
-const initCacheFiles = [
-    '/',
-    '/index.html',
-    '/dist/index.js',
-    '/dist/index.css',
-    '/app/img/favicon.ico'
-];
+const V = '0.2';
 
 self.addEventListener('install', event => {
     event.waitUntil(
         async function(){
-            let cache = await caches.open('test-v1');
-            await cache.addAll(initCacheFiles);
+            let cache = await caches.open(CACHE_INIT);
+            await cache.addAll(InitCacheFiles);
             console.log("SW installed");
             return self.skipWaiting();//强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
         }()
@@ -41,7 +25,7 @@ self.addEventListener('activate', event => {
                 // console.log('cacheList', cacheList)
                 return Promise.all(
                     cacheList.map(function (cacheName) {
-                        if (cacheName !== 'test-v1') {
+                        if (cacheName !== CACHE_INIT) {
                             return caches.delete(cacheName);
                         }
                     })
@@ -52,13 +36,13 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-    let {destination, url} = event.request;
+    let {destination, url, method} = event.request;
     let request = event.request.clone();
-    console.log(`Caught a fetch: ${url} - ${destination}`);
+    sw_utils.postMsg(`Caught a fetch: ${url} - ${destination}`);
     event.respondWith(
         async function () {
             if(!destination){
-                if(url.match(/\/(net_|sockjs-node|__webpack_hmr)/g)){
+                if(method !== 'GET' || url.match(/\/(sockjs-node|__webpack_hmr)/g)){
                     return onlyNetwork(request)
                 }else if(url.match(/\/(api_|get)/g)){
                     return networkFirst(request)
@@ -85,7 +69,13 @@ self.addEventListener('push', event => {
 	}
 });
 
-self.addEventListener('notificationclick', function(event) {
+//监听页面消息
+self.addEventListener('message', event => {
+    let msg = event.data;
+    console.log(`msg received from dom : ${msg}`);
+});
+
+self.addEventListener('notificationclick', event => {
     console.log('[Service Worker] Notification click Received.');
     let notification = event.notification;
     notification.close();
@@ -94,7 +84,7 @@ self.addEventListener('notificationclick', function(event) {
     );
 });
 
-self.addEventListener('notificationclose', function(event) {
+self.addEventListener('notificationclose', event => {
     console.log('notificationclose')
 });
 
@@ -102,7 +92,7 @@ async function onlyNetwork(request){
     console.log('onlyNetwork');
     let httpRes = await fetch(request);
     if(!httpRes || httpRes.status !==200){
-        return getResponseNot200()
+        return sw_utils.getResponseNot200()
     }
     return httpRes;
 }
@@ -113,10 +103,10 @@ async function networkFirst(request) {
     if(!httpRes || httpRes.status !==200){
         let response = await caches.match(request);
         if(response) return response;
-        return getResponseNot200()
+        return sw_utils.getResponseNot200()
     }
     //请求成功, 则缓存
-    await cacheResponse('test-v3', request, httpRes.clone());
+    await cacheResponse(CACHE_NET_FIRST, request, httpRes.clone());
     return httpRes;
 }
 
@@ -127,23 +117,14 @@ async function cacheFirst(request) {
     console.log(`${request.url} no cache, fetch request!`);
     let httpRes = await fetch(request);
     if(!httpRes || httpRes.status !==200){
-        return getResponseNot200()
+        return sw_utils.getResponseNot200()
     }
     //请求成功, 再次缓存
-    await cacheResponse('test-v2', request, httpRes.clone());
+    await cacheResponse(CACHE_CACHE_FIRST, request, httpRes.clone());
     return httpRes;
 }
 
 async function cacheResponse(storeName, httpReq, httpRes){
     let cache = await caches.open(storeName);
     return cache.put(httpReq, httpRes);
-}
-
-function getResponseNot200(){
-    return new Response('{code: 200, data: []}', {
-        headers: {
-            'Accept': '*/*',
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-    })
 }
