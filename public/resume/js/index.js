@@ -8,7 +8,7 @@ var dom_right_height = dom_right.clientHeight;
 var window_height = window.innerHeight;
 
 function initLeftHight() {
-	if(getComputedStyle(dom_left).position == 'absolute'){
+	if(getComputedStyle(dom_left).position === 'absolute'){
 		dom_left.style.height = dom_left_height + 'px';
 	}else{
 		if(dom_right_height>window_height){
