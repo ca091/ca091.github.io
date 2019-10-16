@@ -23,8 +23,7 @@ class Pwa {
 				});
 			//监听sw消息
             navigator.serviceWorker.addEventListener("message", event => {
-                let msg = event.data;
-                appendMsgDom(`msg received from sw : ${msg}`);
+                appendMsgDom(`msg received from sw : ${event.data}`);
             });
         }else{
 			alert('not support serviceWorker')
@@ -79,8 +78,7 @@ class Pwa {
 		// 		permissionResult.then(resolve, reject);
 		// 	}
 		// })
-        Notification.requestPermission()
-		.then(permissionResult => {
+        Notification.requestPermission().then(permissionResult => {
 			if (permissionResult === 'granted') {
                 appendMsgDom('Notification is supported');
 			} else {
