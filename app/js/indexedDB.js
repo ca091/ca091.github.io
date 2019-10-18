@@ -1,4 +1,4 @@
-import {logic, domUtils} from 'bitutilsofweb';
+import {logic, Dom} from 'bitutilsofweb';
 
 if(!window.indexedDB){
     alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.")
@@ -27,7 +27,7 @@ function appendItem(table, item) {
 }
 
 async function init() {
-    let {$} = domUtils;
+    let {$} = Dom;
     let {DBManager} = logic;
     let dbManager = new DBManager();
     const storeName = 'books';
@@ -66,7 +66,7 @@ async function init() {
     });
 
     dom_add.addEventListener('click', async () => {
-        if(input_title.value.trim()=='' || input_author.value.trim()=='') return;
+        if(input_title.value.trim()==='' || input_author.value.trim()==='') return;
         let item = {
             title: input_title.value,
             author: input_author.value

@@ -1,50 +1,53 @@
-var path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const LessPluginFunctions = require('less-plugin-functions');
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const LessPluginFunctions = require('less-plugin-functions')
+// const devMode = process.env.NODE_ENV !== 'production'
 
 module.exports = {
-    entry: {
-        index: './app/index.js',
-        indexedDB: './app/js/indexedDB.js'
-    },
+  entry: {
+    index: './app/index.js',
+    indexedDB: './app/js/indexedDB.js'
+  },
 
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, '../dist'),
-        publicPath: path.resolve(__dirname, '/dist')
-    },
+  output: {
+    filename: '[name].js',
+    chunkFilename: '[name].bundle.js',
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: path.resolve(__dirname, '/dist')
+  },
 
-    module: {
-        rules: [
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      },
+      {
+        test: /\.less$/,
+        use: [
+            // devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            'postcss-loader',
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
-            },
-            {
-                test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                        fallback: "style-loader",
-                        use: ['css-loader','postcss-loader',{
-                            loader: 'less-loader',
-                            options: {
-                                plugins: [new LessPluginFunctions({})]
-                            }
-                        }],
-                        publicPath: './'
-                    })
-            },
-            {
-                test: /\.(png|jpg|gif|woff|woff2)$/,
-                use: 'url-loader?limit=10000'
+              loader: 'less-loader',
+              options: {
+                plugins: [new LessPluginFunctions({})]
+              }
             }
         ]
-    },
-    plugins: [
-        new ExtractTextPlugin({
-            filename: '[name].css',
-            allChunks: true
-        })
+      },
+      {
+        test: /\.(png|jpg|gif|woff|woff2)$/,
+        use: 'url-loader?limit=10000'
+      }
     ]
-    
-};
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[name].css"
+    })
+  ]
+}

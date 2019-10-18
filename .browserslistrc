@@ -1,0 +1,16 @@
+# Browsers that we support
+# Browserslist will choose query according to BROWSERSLIST_ENV or NODE_ENV variables.
+# If none of them is declared, Browserslist will firstly look for production queries and then use defaults.
+# see https://github.com/browserslist/browserslist
+
+[production]
+> 5%
+not dead
+not ie < 11
+
+[modern]
+last 1 chrome version
+last 1 firefox version
+
+[ssr]
+node 12
