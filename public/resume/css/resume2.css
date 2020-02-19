@@ -21,9 +21,12 @@ header img{
   flex-shrink: 0;
   display: block;
   margin-right: 20px;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
+}
+header .info{
+  font-size: 15px;
 }
 header .info span{
   position: relative;
@@ -99,11 +102,11 @@ header .info .name{
 /* 打印时有效 */
 @media screen and (min-width: 500px), print {
   header{
-    padding: 24px 32px 56px 40px;
+    padding: 24px 32px 54px 40px;
   }
   header img{
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     margin-right: 48px;
   }
   header .email, header .tel{
