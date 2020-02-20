@@ -28,7 +28,7 @@ header .head{
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: url("../headpic.jpeg") center 16% / 125% auto no-repeat;
+  background: url("../head-pic.jpeg") center 16% / 125% auto no-repeat;
 }
 header .info{
   font-size: 15px;
