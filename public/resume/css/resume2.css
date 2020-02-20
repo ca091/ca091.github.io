@@ -4,6 +4,11 @@ body {
 body,p{
   margin: 0;
 }
+.focus{
+  color: #000;
+  font-size: 15px;
+  font-weight: bold;
+}
 .content {
   max-width: 900px;
   margin-left: auto;
@@ -17,13 +22,13 @@ header{
   background-color: rgb(38, 71, 100);
   color: #fff;
 }
-header img{
+header .head{
   flex-shrink: 0;
-  display: block;
   margin-right: 20px;
   width: 90px;
   height: 90px;
   border-radius: 50%;
+  background: url("../headpic.jpeg") center 16% / 125% auto no-repeat;
 }
 header .info{
   font-size: 15px;
@@ -129,7 +134,6 @@ header .info .name{
     width: 2px;
     background-color: #fff;
   }
-
   .item .con .time,
   .item .con .time ~ p{
     display: inline-block;
