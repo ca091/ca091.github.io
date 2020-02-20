@@ -59,7 +59,7 @@ header .info .name{
 
 /*大块*/
 .main{
-  padding: 16px 8px;
+  padding: 8px;
   background-color: #fff;
   border-radius: 12px;
   transform: translateY(-30px);
@@ -107,7 +107,7 @@ header .info .name{
 /* 打印时有效 */
 @media screen and (min-width: 500px), print {
   header{
-    padding: 24px 32px 54px 40px;
+    padding: 24px 32px 52px 40px;
   }
   header img{
     width: 110px;
