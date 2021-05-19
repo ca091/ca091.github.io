@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>indexedDB</title>
-    <style>
-        table{
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        th{
-            background-color: lightblue;
-            border: 1px solid grey;
-        }
-        td{
-            border: 1px solid grey;
-        }
-        tr:nth-child(2n+1){
-            background-color: cornsilk;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>indexedDB</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th {
+      background-color: lightblue;
+      border: 1px solid grey;
+    }
+
+    td {
+      border: 1px solid grey;
+    }
+
+    tr:nth-child(2n+1) {
+      background-color: cornsilk;
+    }
+  </style>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>isbn</th>
-            <th>title</th>
-            <th>author</th>
-        </tr>
-    </table>
+<table>
+  <tr>
+    <th>isbn</th>
+    <th>title</th>
+    <th>author</th>
+  </tr>
+</table>
 
-    <button id="btn-clear">clear</button>
+<button id="btn-clear">clear</button>
 
-    <div>
-        <input type="text" placeholder="title" id="input-title">
-        <input type="text" placeholder="author" id="input-author">
-        <button id="btn-add">add</button>
-    </div>
+<div>
+  <input type="text" placeholder="title" id="input-title">
+  <input type="text" placeholder="author" id="input-author">
+  <button id="btn-add">add</button>
+</div>
 
-    <div>
-        <input type="text" placeholder="isbn (key)" id="input-delete">
-        <button id="btn-del">delete</button>
-    </div>
+<div>
+  <input type="text" placeholder="isbn (key)" id="input-delete">
+  <button id="btn-del">delete</button>
+</div>
 
-    <script async src="/dist/indexedDB.js"></script>
+<script async src="/dist/indexedDB.js"></script>
 </body>
 </html>
