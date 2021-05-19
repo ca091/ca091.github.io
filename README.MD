@@ -39,3 +39,5 @@ data AJAX: networkFirst => networkOnly
 
 ### 资源
 - [font awesome](http://fontawesome.dashgame.com)
+
+- [高德地图](https://lbs.amap.com/api/javascript-api/guide/abc/prepare)
