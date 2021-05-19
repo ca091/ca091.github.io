@@ -6,7 +6,6 @@ const LessPluginFunctions = require('less-plugin-functions')
 module.exports = {
   entry: {
     index: './app/index.js',
-    indexedDB: './app/js/indexedDB.js'
   },
 
   output: {
