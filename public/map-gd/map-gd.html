@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HouseAnalysis</title>
+  <link rel="stylesheet" href="./map-gd.css">
+</head>
+<body>
+
+<div id="container"></div>
+
+<div class="control">
+  <div class="area">
+    <select name="area" id="select-area">
+      <option value="jj">锦江</option>
+      <option value="qy">青羊</option>
+      <option value="jn">金牛</option>
+      <option value="wh">武侯</option>
+      <option value="ch">成华</option>
+      <option value="wj">温江</option>
+      <option value="sl">双流</option>
+      <option value="gx">高新</option>
+      <option value="tf">天府</option>
+      <option value="xd">新都</option>
+      <option value="xj">新津</option>
+    </select>
+  </div>
+</div>
+
+<div class="side side-in"></div>
+
+
+
+<script type="module" src="/public/map-gd/map.js"></script>
+
+<script src="https://webapi.amap.com/maps?v=2.0&key=01c5d83f96576c1fd000b3655ade2daa&callback=mapLoaded" async></script>
+
+<script type="module" src="/public/map-gd/index.js"></script>
+<!--see: https://lbs.amap.com/api/jsapi-v2/guide/abc/prepare-->
+</body>
+</html>
