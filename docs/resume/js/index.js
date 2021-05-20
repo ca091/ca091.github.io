@@ -1,11 +1,11 @@
-var $ = document.querySelector.bind(document);
-var dom_left = $('.left');
-var dom_arrow_up = $('.arrow-up');
-var dom_right = $('.right');
-var dom_show_left = $('.show-left');
-var dom_left_height = dom_left.clientHeight;
-var dom_right_height = dom_right.clientHeight;
-var window_height = window.innerHeight;
+let $ = document.querySelector.bind(document);
+let dom_left = $('.left');
+let dom_arrow_up = $('.arrow-up');
+let dom_right = $('.right');
+let dom_show_left = $('.show-left');
+let dom_left_height = dom_left.clientHeight;
+let dom_right_height = dom_right.clientHeight;
+let window_height = window.innerHeight;
 
 function initLeftHight() {
 	if(getComputedStyle(dom_left).position === 'absolute'){
@@ -30,8 +30,8 @@ dom_arrow_up.addEventListener('click', function () {
 dom_show_left.addEventListener('click', function () {
 	dom_left.style.transform = 'translateY(0)'
 });
-var pullStartPoint = {};
-var pullEndPoint = {};
+let pullStartPoint = {};
+let pullEndPoint = {};
 dom_right.addEventListener('touchstart', function (e) {
 	pullStartPoint.x = e.touches[0].clientX;
 	pullStartPoint.y = e.touches[0].clientY;
@@ -49,8 +49,8 @@ dom_right.addEventListener('touchend', function () {
 	pullEndPoint = {}
 });
 
-var startPoint = {};
-var endPoint = {};
+let startPoint = {};
+let endPoint = {};
 dom_left.addEventListener('touchstart', function (e) {
 	startPoint.x = e.touches[0].clientX;
 	startPoint.y = e.touches[0].clientY;
@@ -74,7 +74,7 @@ window.addEventListener('resize', function () {
 	setTimeout(initLeftHight, 100);
 });
 window.addEventListener('scroll', function () {
-	var t = document.documentElement.scrollTop || document.body.scrollTop;
+	let t = document.documentElement.scrollTop || document.body.scrollTop;
 	if(t>200){
 		dom_arrow_up.style.display = 'block';
 	}else{
