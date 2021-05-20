@@ -1,4 +1,4 @@
-importScripts('./app/js/swImport.js')
+importScripts('/swImport.js')
 
 const V = '0.2'
 

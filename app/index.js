@@ -3,7 +3,10 @@ import Pwa from './js/PwaInit.js';
 import {initDom, initDomWithPwa} from './js/initDom.js';
 // import {test} from './js/test.js';
 
-if (env === 'dev') {
+// console.log(process.env)
+console.log(import.meta.env)
+
+if (import.meta.env.DEV) {
   let btn = document.createElement('button');
   btn.textContent = 'start serviceWorker';
   btn.addEventListener('click', init);

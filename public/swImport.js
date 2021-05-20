@@ -26,7 +26,4 @@ const CACHE_NET_FIRST = 'test_nf'
 const InitCacheFiles = [
   '/',
   '/index.html',
-  '/dist/index.js',
-  '/dist/index.css',
-  '/app/img/favicon.ico',
 ]

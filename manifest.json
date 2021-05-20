@@ -3,7 +3,7 @@
   "short_name": "pwa_in",
   "icons": [
     {
-      "src": "/app/img/favicon.ico",
+      "src": "/assets/favicon.ico",
       "sizes": "180x180",
       "type": "image/x-icon"
     }
