@@ -89,7 +89,7 @@ self.addEventListener('notificationclose', event => {
 })
 
 async function onlyNetwork(request) {
-  console.log('onlyNetwork')
+  console.log('onlyNetwork', request.url)
   let httpRes = await fetch(request)
   if (!httpRes || httpRes.status !== 200) {
     return sw_utils.getResponseNot200()
@@ -98,7 +98,7 @@ async function onlyNetwork(request) {
 }
 
 async function networkFirst(request) {
-  console.log('networkFirst')
+  console.log('networkFirst', request.url)
   let httpRes = await fetch(request)
   if (!httpRes || httpRes.status !== 200) {
     let response = await caches.match(request)
@@ -111,7 +111,7 @@ async function networkFirst(request) {
 }
 
 async function cacheFirst(request) {
-  console.log('cacheFirst')
+  console.log('cacheFirst', request.url)
   let response = await caches.match(request)
   if (response) return response
   console.log(`${request.url} no cache, fetch request!`)
