@@ -8,7 +8,7 @@ self.addEventListener('install', event => {
         let cache = await caches.open(CACHE_INIT)
         await cache.addAll(InitCacheFiles)
         console.log('SW installed')
-        return self.skipWaiting() //强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
+        return self.skipWaiting() // 强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
       }(),
   )
 })
@@ -56,7 +56,7 @@ self.addEventListener('fetch', event => {
   )
 })
 
-//监听推送
+// 监听推送
 self.addEventListener('push', event => {
   console.log('get push')
   if (event.data) {
@@ -69,7 +69,7 @@ self.addEventListener('push', event => {
   }
 })
 
-//监听页面消息
+// 监听页面消息
 self.addEventListener('message', event => {
   let msg = event.data
   console.log(`msg received from dom : ${msg}`)
@@ -105,7 +105,7 @@ async function networkFirst(request) {
     if (response) return response
     return sw_utils.getResponseNot200()
   }
-  //请求成功, 则缓存
+  // 请求成功, 则缓存
   await cacheResponse(CACHE_NET_FIRST, request, httpRes.clone())
   return httpRes
 }
@@ -121,7 +121,7 @@ async function cacheFirst(request) {
     // v0.2 请求失败 则直接返回结果
     return httpRes
   }
-  //请求成功, 再次缓存
+  // 请求成功, 再次缓存
   await cacheResponse(CACHE_CACHE_FIRST, request, httpRes.clone())
   return httpRes
 }
