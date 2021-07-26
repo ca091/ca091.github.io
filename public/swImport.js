@@ -24,6 +24,5 @@ const CACHE_CACHE_FIRST = 'test_cf'
 const CACHE_NET_FIRST = 'test_nf'
 
 const InitCacheFiles = [
-  '/',
   '/index.html',
 ]

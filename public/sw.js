@@ -8,7 +8,7 @@ self.addEventListener('install', event => {
         let cache = await caches.open(CACHE_INIT)
         await cache.addAll(InitCacheFiles)
         console.log('SW installed')
-        return self.skipWaiting()//强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
+        return self.skipWaiting() //强制当前处在 waiting 状态的 Service Worker 进入 activate 状态
       }(),
   )
 })
@@ -40,7 +40,7 @@ self.addEventListener('fetch', event => {
   let request = event.request.clone()
   sw_utils.postMsg(`Caught a fetch: ${url} - ${destination}`)
   event.respondWith(
-      async function () {
+      function () {
         if (!destination) {
           if (method !== 'GET' || url.match(/\/(sockjs-node|__webpack_hmr)/g)) {
             return onlyNetwork(request)
@@ -117,7 +117,9 @@ async function cacheFirst(request) {
   console.log(`${request.url} no cache, fetch request!`)
   let httpRes = await fetch(request)
   if (!httpRes || httpRes.status !== 200) {
-    return sw_utils.getResponseNot200()
+    // return sw_utils.getResponseNot200()
+    // v0.2 请求失败 则直接返回结果
+    return httpRes
   }
   //请求成功, 再次缓存
   await cacheResponse(CACHE_CACHE_FIRST, request, httpRes.clone())
