@@ -6,7 +6,7 @@ module.exports = {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        map_gd: resolve(__dirname, 'map-gd/map-gd.html')
+        map_gd: resolve(__dirname, 'map/amap.html')
       }
     }
   }
