@@ -59,6 +59,7 @@ header .info .name{
 
 /*大块*/
 .main{
+  position: relative;
   padding: 8px;
   background-color: #fff;
   border-radius: 12px;
